@@ -11,15 +11,11 @@ import skimage.segmentation
 import skimage.io as io
 import math
 
-#Colores en hsv
+#Colores en BGR
 RED_HSV=((120,200,94),(180,255,213))
 BLUE_HSV=((100,150,0),(140,255,255))
 GREEN_HSV=((55, 100, 50),(65, 255, 255))
 
-#Colores en rgb
-RED_RGB = ((139, 0, 0), (255, 160, 122))
-GREEN_RGB = ((0, 100, 0), (170, 255, 170))
-BLUE_RGB = ((0, 0, 100), (65, 105, 225))
 
 def getFilter(color):
      if color == "rojo":
@@ -32,8 +28,8 @@ def getFilter(color):
          if args.hsv:
              filtro = (args.hsv[0],args.hsv[1],args.hsv[2]),(args.hsv[3],args.hsv[4],args.hsv[5])
          if args.rgb:
-             lower_filter = cv2.cvtColor(np.uint8([[[args.rgb[0],args.rgb[1],args.rgb[2]]]]),cv2.COLOR_RGB2HSV)
-             upper_filter = cv2.cvtColor(np.uint8([[[args.rgb[3],args.rgb[4],args.rgb[5]]]]),cv2.COLOR_RGB2HSV)
+             lower_filter = cv2.cvtColor(np.uint8([[[args.rgb[0],args.rgb[1],args.rgb[2]]]]),cv2.COLOR_RGB2BGR)
+             upper_filter = cv2.cvtColor(np.uint8([[[args.rgb[3],args.rgb[4],args.rgb[5]]]]),cv2.COLOR_RGB2BGR)
              filtro = (lower_filter,upper_filter)
      return filtro
 
@@ -89,6 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--rgb',type=int, nargs=6, dest ='rgb',help='Valores rgb para los que buscar color')
     parser.add_argument('-c', '--color', help= 'Buscar color')
     parser.add_argument('-v', '--video', help = 'Directorio al video')
+    parser.add_argument('-i', '--image', help = 'Directorio a la imagen')
 
     args = parser.parse_args()
 
