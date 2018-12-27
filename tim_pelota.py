@@ -8,8 +8,6 @@ import skimage
 import skimage.morphology
 import skimage.exposure
 import skimage.segmentation
-import skimage.io as io
-import math
 
 #Colores en BGR
 RED_BGR=((120,200,94),(180,255,213))
@@ -43,11 +41,9 @@ def filterVideo(args):
            filter_image=cv2.GaussianBlur(input_image,(5,5),0)
            hsv_image=cv2.cvtColor(filter_image,cv2.COLOR_BGR2HSV)
            mask = cv2.inRange(hsv_image,filtro[0],filtro[1])
-           mask = cv2.erode(mask, None, iterations=2)
-           mask = cv2.dilate(mask, None, iterations=2)
+           mask = skimage.morphology.opening(mask)
            detection=np.copy(mask)
            cv2.imshow('FILTRO',detection)
-           # cv2.imshow('frame',input_image)
            ret,thresh = cv2.threshold(detection,127,255,0)
            if cv2.waitKey(1) & 0xFF == ord('q'):
                break
@@ -77,6 +73,5 @@ if __name__ == '__main__':
 
     if args.video:
         filterVideo(args)
-    if args.image:
-        filterImage(args)
+        
     print args
