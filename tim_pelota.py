@@ -12,25 +12,26 @@ import skimage.io as io
 import math
 
 #Colores en BGR
-RED_HSV=((120,200,94),(180,255,213))
-BLUE_HSV=((100,150,0),(140,255,255))
-GREEN_HSV=((55, 100, 50),(65, 255, 255))
-
+RED_BGR=((120,200,94),(180,255,213))
+BLUE_BGR=((100,150,0),(140,255,255))
+GREEN_BGR=((55, 100, 50),(65, 255, 255))
 
 def getFilter(color):
      if color == "rojo":
-         filtro = (RED_HSV[0],RED_HSV[1])
+         filtro = (RED_BGR[0],RED_BGR[1])
      elif color == "azul":
-         filtro = (BLUE_HSV[0],BLUE_HSV[1])
+         filtro = (BLUE_BGR[0],BLUE_BGR[1])
      elif color == "verde":
-         filtro = (GREEN_HSV[0],GREEN_HSV[1])
+         filtro = (GREEN_BGR[0],GREEN_BGR[1])
      else:
-         if args.hsv:
-             filtro = (args.hsv[0],args.hsv[1],args.hsv[2]),(args.hsv[3],args.hsv[4],args.hsv[5])
-         if args.rgb:
-             lower_filter = cv2.cvtColor(np.uint8([[[args.rgb[0],args.rgb[1],args.rgb[2]]]]),cv2.COLOR_RGB2BGR)
-             upper_filter = cv2.cvtColor(np.uint8([[[args.rgb[3],args.rgb[4],args.rgb[5]]]]),cv2.COLOR_RGB2BGR)
-             filtro = (lower_filter,upper_filter)
+        if args.hsv:
+            lower_filter = cv2.cvtColor(np.uint8([[[args.rgb[0],args.rgb[1],args.rgb[2]]]]),cv2.COLOR_HSV2BGR)
+            upper_filter = cv2.cvtColor(np.uint8([[[args.rgb[3],args.rgb[4],args.rgb[5]]]]),cv2.COLOR_HSV2BGR)
+            filtro = (lower_filter,upper_filter)
+        if args.rgb:
+            lower_filter = cv2.cvtColor(np.uint8([[[args.rgb[0],args.rgb[1],args.rgb[2]]]]),cv2.COLOR_RGB2BGR)
+            upper_filter = cv2.cvtColor(np.uint8([[[args.rgb[3],args.rgb[4],args.rgb[5]]]]),cv2.COLOR_RGB2BGR)
+            filtro = (lower_filter,upper_filter)
      return filtro
 
 def filterVideo(args):
@@ -64,28 +65,13 @@ def filterVideo(args):
    cap.release()
    cv2.destroyAllWindows()
 
-def filterImage(args):
-    image = io.imread(args.image)
-    filtro = getFilter(args.color)
-    # io.imshow('Imagen',image)
-    filter_image=cv2.GaussianBlur(image,(5,5),0)
-    hsv_image=cv2.cvtColor(filter_image,cv2.COLOR_BGR2HSV)
-    io.imsave("hsv.jpg",hsv_image)
-    mask = cv2.inRange(hsv_image,filtro[0],filtro[1])
-    mask = cv2.erode(mask, None, iterations=2)
-    mask = cv2.dilate(mask, None, iterations=2)
-    ret,thresh = cv2.threshold(mask,127,255,0)
-    # cv2.imshow('Mascara',mask)
-    io.imshow(mask)
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-hsv', '--hsv',type=int, nargs=6, dest ='hsv',help='Valores hsv para los que buscar color')
     parser.add_argument('-r', '--rgb',type=int, nargs=6, dest ='rgb',help='Valores rgb para los que buscar color')
-    parser.add_argument('-c', '--color', help= 'Buscar color')
+    parser.add_argument('-c', '--color', help= 'Buscar color [rojo azul verde]')
     parser.add_argument('-v', '--video', help = 'Directorio al video')
-    parser.add_argument('-i', '--image', help = 'Directorio a la imagen')
 
     args = parser.parse_args()
 
