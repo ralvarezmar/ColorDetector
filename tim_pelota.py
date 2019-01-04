@@ -14,6 +14,10 @@ RED_BGR=((120,200,94),(180,255,213))
 BLUE_BGR=((100,150,0),(140,255,255))
 GREEN_BGR=((55, 100, 50),(65, 255, 255))
 
+# RED_RANGE = ((0, 100, 100),( 20 ,255 ,255))
+# GREEN_RANGE = ((0, 100, 0), (170, 255, 170))
+# BLUE_RANGE = ((0, 0, 100), (65, 105, 225))
+
 def getFilter(color):
      if color == "rojo":
          filtro = (RED_BGR[0],RED_BGR[1])
@@ -73,5 +77,5 @@ if __name__ == '__main__':
 
     if args.video:
         filterVideo(args)
-        
+
     print args
