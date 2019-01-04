@@ -1,5 +1,7 @@
 # Color detector
 
+Detección de una pelota de cualquier color en un video.
+
 ## Objetivo
 
 El objetivo de la práctica consiste en profundizar sobre algún tema abordado en la asignatura y presentar un proyecto con los resultados y conclusiones obtenidas.
